@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
             dragStart = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         
         // Zoom in
@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
             mainCamera.orthographicSize += zoomIncrement;
         
         // Drag camera
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(1))
         {
             Vector3 direction = dragStart - mainCamera.ScreenToWorldPoint(Input.mousePosition);
             mainCamera.transform.position += direction;

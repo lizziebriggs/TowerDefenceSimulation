@@ -360,8 +360,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 10
   mapHeight: 10
-  mapParent: {fileID: 69891519}
   towerPopulation: 250
+  mapParent: {fileID: 69891519}
+  enemiesParent: {fileID: 1521247443}
   hypothesis: {fileID: 2095510367877511580, guid: 815f7677ccc401040843e84614775144, type: 3}
   enemy: {fileID: 993008875419324934, guid: 1ae19c514fb4e0746855461bdf55955c, type: 3}
 --- !u!4 &293181900
@@ -392,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 293181899}
   populationSize: 20
-  maxIterations: 10
+  maxIterations: 500
   outputLog: {fileID: 1855950224}
 --- !u!1 &705507993
 GameObject:
@@ -541,7 +542,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -565,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 22, y: -22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -776,8 +777,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: -0.0000013503458}
+  m_SizeDelta: {x: 0, y: 701.92}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1483435073
 GameObject:
@@ -816,8 +817,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 136.2066, y: 47.18799}
-  m_SizeDelta: {x: 272.4132, y: 93.376}
+  m_AnchoredPosition: {x: 123.08502, y: 85.50299}
+  m_SizeDelta: {x: 246.1701, y: 170.006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1483435075
 MonoBehaviour:
@@ -897,7 +898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1521247444}
   m_Layer: 0
-  m_Name: Map (1)
+  m_Name: Enemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 206892258}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.31125337
+  m_Size: 0.24220142
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

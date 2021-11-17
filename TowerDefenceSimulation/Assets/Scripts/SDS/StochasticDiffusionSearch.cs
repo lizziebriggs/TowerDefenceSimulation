@@ -17,12 +17,15 @@ namespace SDS
         [SerializeField] private Text outputLog;
     
         private List<Hypothesis> searchSpace = new List<Hypothesis>();
-        private List<Agent> agents = new List<Agent>();
+        private readonly List<Agent> agents = new List<Agent>();
 
         private int itr = 0;
         private int activeAgents;
         private int activityPercentage;
 
+        private bool playSDS;
+
+        
         private void Start()
         {
             outputLog.text = "";
@@ -35,6 +38,7 @@ namespace SDS
             InitialiseAgents();
         }
 
+        
         private void InitialiseAgents()
         {
             for (int i = 0; i < populationSize; i++)
@@ -54,9 +58,10 @@ namespace SDS
             }
         }
 
+        
         private void Update()
         {
-            if (itr == maxIterations) return;
+            if (itr == maxIterations || !playSDS) return;
             
             activeAgents = 0;
                 
@@ -70,14 +75,58 @@ namespace SDS
             itr++;
         }
 
-        private void TestPhase()
+        
+        public void PlaySDS()
         {
-            
+            playSDS = true;
         }
 
+        public void PauseSDS()
+        {
+            playSDS = false;
+        }
+
+        
+        private void TestPhase()
+        {
+            for (int i = 0; i < populationSize; i++)
+            {
+                var agent = agents[i];
+                var agentHypo = searchSpace[agent.Hypothesis];
+
+                // Pick random micro-feature for agent to explore
+                var microFeature = agentHypo.MicroFeatures[Random.Range(0, agentHypo.MicroFeatures.Count - 1)];
+                
+                // Move agent to micro feature
+                agent.gameObject.transform.position = microFeature.gameObject.transform.position;
+                
+                // Evaluate hypothesis
+                if (microFeature.HasTower)
+                {
+                    agent.Status = true;
+                    activeAgents++;
+                }
+                else
+                    agent.Status = false;
+            }
+        }
+
+        
         private void DiffusionPhase()
         {
-            
+            for (int i = 0; i < populationSize; i++)
+            {
+                var agent = agents[i];
+
+                // Get inactive agents to communicate with another agent
+                if (!agent.Status)
+                {
+                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    
+                    // If random agent is active, give agent the random agent's hypothesis
+                    agent.Hypothesis = randomAgent.Status ? randomAgent.Hypothesis : Random.Range(0, searchSpace.Count - 1);
+                }
+            }
         }
     }
 }
