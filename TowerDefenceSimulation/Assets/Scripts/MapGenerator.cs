@@ -7,7 +7,10 @@ public class MapGenerator : MonoBehaviour
     [Header("Map Values")]
     [SerializeField] private int mapWidth;
     [SerializeField] private int mapHeight;
+    [SerializeField] private int towerPopulation;
     [SerializeField] private GameObject mapParent;
+    [SerializeField] private GameObject enemiesParent;
+    public GameObject EnemiesParent => enemiesParent;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject hypothesis;
@@ -24,6 +27,13 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
+        GenerateMap();
+        SpawnTowers();
+    }
+
+    private void GenerateMap()
+    {
+        // Generate and display map
         for (int height = 0; height < mapHeight; height++)
         {
             for (int width = 0; width < mapWidth; width++)
@@ -40,5 +50,28 @@ public class MapGenerator : MonoBehaviour
         }
 
         mapGenerated = true;
+    }
+
+    private void SpawnTowers()
+    {
+        for (int i = 0; i < towerPopulation; i++)
+        {
+            // Pick random micro-feature on a random hypothesis
+            int randomHypoIndex = Random.Range(0, map.Count);
+            Hypothesis randomHypo = map[randomHypoIndex].GetComponent<Hypothesis>();
+            
+            int randomMicroIndex = Random.Range(0, hypothesis.GetComponent<Hypothesis>().MicroFeatures.Count);
+            MicroFeature randomMicro = randomHypo.MicroFeatures[randomMicroIndex].GetComponent<MicroFeature>();
+
+            // If micro-feature already has a tower on it, try again
+            if (randomMicro.HasTower) i--;
+            
+            // Otherwise, place tower on micro-feature
+            else
+            {
+                randomMicro.HasTower = true;
+                if (randomMicro.SpriteRender) randomMicro.SpriteRender.color = Color.blue;
+            }
+        }
     }
 }
