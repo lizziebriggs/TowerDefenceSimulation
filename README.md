@@ -1,2 +1,2 @@
-# GeneticAlgorithm-TowerDefence
-Coursework project to develop a tower defence game in Unity with enemies controlled by a genetic algorithm
+# Tower Defence Solution
+Natural computing coursework mini project where I am developing a tower defence game in Unity with enemies controlled by a swarm intelligence algorithm
