@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    public static MapGenerator Instance;
+    
     [Header("Map Values")]
     [SerializeField] private Vector2 startPos;
     [SerializeField] private int mapWidth;
@@ -40,13 +42,22 @@ public class MapGenerator : MonoBehaviour
 
     private List<Hypothesis> map = new List<Hypothesis>();
     public List<Hypothesis> Map => map;
-    
+
+    private int towers;
+    public int Towers
+    {
+        get => towers;
+        set => towers = value;
+    }
+
     private bool mapGenerated;
     public bool MapGenerated => mapGenerated;
 
     
     private void Awake()
     {
+        Instance = GetComponent<MapGenerator>();
+        
         hypoSpawnPos = startPos;
         GenerateMap();
     }
@@ -102,7 +113,8 @@ public class MapGenerator : MonoBehaviour
         {
             Destroy(hypo.gameObject);
         }
-        
+
+        towers = 0;
         map.Clear();
         hypoSpawnPos = startPos;
     }

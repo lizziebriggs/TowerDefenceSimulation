@@ -51,6 +51,8 @@ namespace SDS
 
         [Header("UI Output")]
         [SerializeField] private Text outputLog;
+        [SerializeField] private GameObject endGamePanel;
+        [SerializeField] private Text endGameText;
     
         private List<Hypothesis> searchSpace = new List<Hypothesis>();
         private readonly List<Agent> agents = new List<Agent>();
@@ -76,6 +78,7 @@ namespace SDS
 
         private void Start()
         {
+            endGamePanel.SetActive(false);
             InitialiseAgents();
         }
 
@@ -140,6 +143,18 @@ namespace SDS
             }
 
             itr++;
+
+            if (itr == maxIterations)
+            {
+                endGameText.text = mapGenerator.Towers == 0 ? "ENEMIES WON" : "ENEMIES LOST";
+                endGamePanel.SetActive(true);
+            }
+            else if (mapGenerator.Towers == 0)
+            {
+                endGameText.text = "ENEMIES WON";
+                endGamePanel.SetActive(true);
+                itr = maxIterations;
+            }
         }
 
         

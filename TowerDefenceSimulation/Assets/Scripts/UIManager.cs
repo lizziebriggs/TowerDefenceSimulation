@@ -8,6 +8,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private StochasticDiffusionSearch sds;
     [SerializeField] private MapGenerator mapGenerator;
 
+    [Header("UI Elements")]
+    [SerializeField] private Text towerText;
+
     [Header("UI SDS Setting Elements")]
     [SerializeField] private Text playButtonText;
     [SerializeField] private Dropdown recruitmentModes;
@@ -33,6 +36,12 @@ public class UIManager : MonoBehaviour
         // Set SDS to not destroy towers by defaults
         destroyTowersToggle.isOn = false;
         ToggleTowerDestruction();
+    }
+
+
+    private void Update()
+    {
+        towerText.text = "Towers left: " + mapGenerator.Towers;
     }
 
 

@@ -5,11 +5,6 @@ namespace SDS
     public class MicroFeature : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRender;
-        public SpriteRenderer SpriteRender
-        {
-            get => spriteRender;
-            set => spriteRender = value;
-        }
 
         private bool hasTower;
         public bool HasTower => hasTower;
@@ -26,12 +21,14 @@ namespace SDS
 
         public void BuildTower()
         {
+            MapGenerator.Instance.Towers++;
             spriteRender.color = Color.blue;
             hasTower= true;
         }
 
         public void DestroyTower()
         {
+            MapGenerator.Instance.Towers--;
             spriteRender.color = Color.white;
             hasTower= false;
         }
