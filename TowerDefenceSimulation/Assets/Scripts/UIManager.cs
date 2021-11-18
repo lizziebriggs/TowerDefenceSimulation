@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField maxIterationInput;
 
     [Header("UI Map Setting Elements")]
+    [SerializeField] private Animator settingsAnimator;
     [SerializeField] private InputField widthInput;
     [SerializeField] private InputField heightInput;
     [SerializeField] private InputField towerPopInput;
@@ -69,6 +70,13 @@ public class UIManager : MonoBehaviour
     public void ChangeRecruitmentMode()
     {
         sds.Recruitment = (StochasticDiffusionSearch.RecruitmentModes)recruitmentModes.value;
+    }
+
+
+    public void OpenSettings()
+    {
+        bool isOpen = settingsAnimator.GetBool("open");
+        settingsAnimator.SetBool("open", !isOpen);
     }
 
     
