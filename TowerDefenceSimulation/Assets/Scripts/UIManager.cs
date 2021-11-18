@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [Header("UI SDS Setting Elements")]
     [SerializeField] private Text playButtonText;
     [SerializeField] private Dropdown recruitmentModes;
+    [SerializeField] private Toggle destroyTowersToggle;
     [SerializeField] private Toggle infiniteToggle;
     [SerializeField] private GameObject maxIterationInputObject;
     [SerializeField] private InputField maxIterationInput;
@@ -28,6 +29,10 @@ public class UIManager : MonoBehaviour
         // Set SDS to not be infinite by default
         infiniteToggle.isOn = false;
         ToggleInfinite();
+        
+        // Set SDS to not destroy towers by defaults
+        destroyTowersToggle.isOn = false;
+        ToggleTowerDestruction();
     }
 
 
@@ -43,6 +48,15 @@ public class UIManager : MonoBehaviour
             playButtonText.text = "Play";
             sds.PlaySDS = false;
         }
+    }
+
+
+    public void ToggleTowerDestruction()
+    {
+        if (destroyTowersToggle.isOn)
+            sds.DestroyTowers = true;
+        else if (!destroyTowersToggle.isOn)
+            sds.DestroyTowers = false;
     }
 
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -22,6 +21,7 @@ namespace SDS
 
         [Header("SDS Values")]
         [SerializeField] private int populationSize;
+        [SerializeField] private bool destroyTowers;
         [SerializeField] private int maxIterations;
         [SerializeField] private bool infinite;
     
@@ -29,6 +29,12 @@ namespace SDS
         {
             get => populationSize;
             set => populationSize = value;
+        }
+    
+        public bool DestroyTowers
+        {
+            get => destroyTowers;
+            set => destroyTowers = value;
         }
     
         public int MaxIterations
@@ -127,8 +133,11 @@ namespace SDS
             DiffusionPhase();
                 
             // Display activity statuses
-            activityPercentage = activeAgents * 100 / populationSize;
-            outputLog.text += "Iteration: " + itr + " Active agents: " + activityPercentage + "%\n";
+            if (outputLog.IsActive())
+            {
+                activityPercentage = activeAgents * 100 / populationSize;
+                outputLog.text += "Iteration: " + itr + " Active agents: " + activityPercentage + "%\n";
+            }
 
             itr++;
         }
@@ -151,6 +160,7 @@ namespace SDS
                 if (microFeature.HasTower)
                 {
                     agent.Status = true;
+                    if (destroyTowers) microFeature.DestroyTower();
                     activeAgents++;
                 }
                 else

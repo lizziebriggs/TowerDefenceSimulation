@@ -91,10 +91,7 @@ public class MapGenerator : MonoBehaviour
             
             // Otherwise, place tower on micro-feature
             else
-            {
-                randomMicro.HasTower = true;
-                if (randomMicro.SpriteRender) randomMicro.SpriteRender.color = Color.blue;
-            }
+                randomMicro.BuildTower();
         }
     }
 

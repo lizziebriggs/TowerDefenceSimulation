@@ -11,24 +11,29 @@ namespace SDS
             set => spriteRender = value;
         }
 
-        public bool HasTower { get; set; }
+        private bool hasTower;
+        public bool HasTower => hasTower;
 
         private void OnMouseDown()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
-                if(!HasTower)
-                {
-                    spriteRender.color = Color.blue;
-                    HasTower= true;
-                }
+                if(!hasTower) BuildTower();
                 
-                else
-                {
-                    spriteRender.color = Color.white;
-                    HasTower= false;
-                }
+                else DestroyTower();
             }
+        }
+
+        public void BuildTower()
+        {
+            spriteRender.color = Color.blue;
+            hasTower= true;
+        }
+
+        public void DestroyTower()
+        {
+            spriteRender.color = Color.white;
+            hasTower= false;
         }
     }
 }
