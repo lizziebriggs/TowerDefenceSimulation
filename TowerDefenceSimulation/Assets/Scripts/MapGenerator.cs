@@ -5,19 +5,38 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour
 {
     [Header("Map Values")]
+    [SerializeField] private Vector2 startPos;
     [SerializeField] private int mapWidth;
     [SerializeField] private int mapHeight;
     [SerializeField] private int towerPopulation;
     [SerializeField] private GameObject mapParent;
     [SerializeField] private GameObject enemiesParent;
     public GameObject EnemiesParent => enemiesParent;
+    
+    public int MapWidth
+    {
+        get => mapWidth;
+        set => mapWidth = value;
+    }
+    
+    public int MapHeight
+    {
+        get => mapHeight;
+        set => mapHeight = value;
+    }
+    
+    public int TowerPopulation
+    {
+        get => towerPopulation;
+        set => towerPopulation = value;
+    }
 
     [Header("Prefabs")]
     [SerializeField] private GameObject hypothesis;
     [SerializeField] private GameObject enemy;
     public GameObject Enemy => enemy;
     
-    private Vector2 hypoSpawnPos = new Vector2(0, 0);
+    private Vector2 hypoSpawnPos;
 
     private List<Hypothesis> map = new List<Hypothesis>();
     public List<Hypothesis> Map => map;
@@ -25,13 +44,15 @@ public class MapGenerator : MonoBehaviour
     private bool mapGenerated;
     public bool MapGenerated => mapGenerated;
 
+    
     private void Awake()
     {
+        hypoSpawnPos = startPos;
         GenerateMap();
-        SpawnTowers();
     }
 
-    private void GenerateMap()
+    
+    public void GenerateMap()
     {
         // Generate and display map
         for (int height = 0; height < mapHeight; height++)
@@ -45,13 +66,15 @@ public class MapGenerator : MonoBehaviour
                 hypoSpawnPos.x += 5;
             }
 
-            hypoSpawnPos.x = 0;
+            hypoSpawnPos.x = startPos.x;
             hypoSpawnPos.y -= 5;
         }
 
         mapGenerated = true;
+        SpawnTowers();
     }
 
+    
     private void SpawnTowers()
     {
         for (int i = 0; i < towerPopulation; i++)
@@ -73,5 +96,17 @@ public class MapGenerator : MonoBehaviour
                 if (randomMicro.SpriteRender) randomMicro.SpriteRender.color = Color.blue;
             }
         }
+    }
+
+    
+    public void ClearMap()
+    {
+        foreach (Hypothesis hypo in map)
+        {
+            Destroy(hypo.gameObject);
+        }
+        
+        map.Clear();
+        hypoSpawnPos = startPos;
     }
 }

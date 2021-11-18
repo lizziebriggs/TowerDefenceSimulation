@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -22,6 +23,25 @@ namespace SDS
         [Header("SDS Values")]
         [SerializeField] private int populationSize;
         [SerializeField] private int maxIterations;
+        [SerializeField] private bool infinite;
+    
+        public int PopulationSize
+        {
+            get => populationSize;
+            set => populationSize = value;
+        }
+    
+        public int MaxIterations
+        {
+            get => maxIterations;
+            set => maxIterations = value;
+        }
+    
+        public bool Infinite
+        {
+            get => infinite;
+            set => infinite = value;
+        }
 
         [Header("UI Output")]
         [SerializeField] private Text outputLog;
@@ -50,19 +70,34 @@ namespace SDS
 
         private void Start()
         {
+            InitialiseAgents();
+        }
+
+
+        public void ClearAgents()
+        {
+            foreach (Agent agent in agents)
+            {
+                Destroy(agent.gameObject);
+            }
+            
+            agents.Clear();
+        }
+
+        
+        public void InitialiseAgents()
+        {
+            // Reset values
             outputLog.text = "";
+            itr = 0;
+            playSDS = false;
             
             if (mapGenerator.MapGenerated)
             {
                 searchSpace = mapGenerator.Map;
             }
             
-            InitialiseAgents();
-        }
-
-        
-        private void InitialiseAgents()
-        {
+            // Set up agents
             for (int i = 0; i < populationSize; i++)
             {
                 // Create and instantiate new agent
@@ -83,8 +118,9 @@ namespace SDS
         
         private void Update()
         {
-            if (itr == maxIterations || !playSDS) return;
-            
+            if (!playSDS) return;
+            if (!infinite && itr >= maxIterations) return;
+
             activeAgents = 0;
                 
             TestPhase();

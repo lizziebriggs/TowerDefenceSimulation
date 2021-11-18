@@ -1,3 +1,4 @@
+using System;
 using SDS;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,23 +6,85 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private StochasticDiffusionSearch sds;
+    [SerializeField] private MapGenerator mapGenerator;
 
-    [Header("UI Elements")]
+    [Header("UI SDS Setting Elements")]
+    [SerializeField] private Text playButtonText;
     [SerializeField] private Dropdown recruitmentModes;
+    [SerializeField] private Toggle infiniteToggle;
+    [SerializeField] private GameObject maxIterationInputObject;
+    [SerializeField] private InputField maxIterationInput;
+
+    [Header("UI Map Setting Elements")]
+    [SerializeField] private InputField widthInput;
+    [SerializeField] private InputField heightInput;
+    [SerializeField] private InputField towerPopInput;
+    [SerializeField] private InputField agentPopInput;
+
     
-    
-    public void PlaySDS()
+    private void Start()
     {
-        sds.PlaySDS = true;
+        // Set SDS to not be infinite by default
+        infiniteToggle.isOn = false;
+        ToggleInfinite();
     }
 
-    public void PauseSDS()
+
+    public void TogglePlay()
     {
-        sds.PlaySDS = false;
+        if (!sds.PlaySDS)
+        {
+            playButtonText.text = "Pause";
+            sds.PlaySDS = true;
+        }
+        else
+        {
+            playButtonText.text = "Play";
+            sds.PlaySDS = false;
+        }
     }
 
+
+    public void ToggleInfinite()
+    {
+        if (infiniteToggle.isOn)
+        {
+            maxIterationInputObject.SetActive(false);
+            sds.Infinite = true;
+        }
+        else
+        {
+            maxIterationInputObject.SetActive(true);
+            sds.Infinite = false;
+        }
+    }
+
+
+    public void SetMaxIterations()
+    {
+        sds.MaxIterations = Convert.ToInt32(maxIterationInput.text);
+    }
+
+    
     public void ChangeRecruitmentMode()
     {
         sds.Recruitment = (StochasticDiffusionSearch.RecruitmentModes)recruitmentModes.value;
+    }
+
+    
+    public void GenerateMap()
+    {
+        if(sds.PlaySDS) TogglePlay();
+        
+        mapGenerator.MapWidth = Convert.ToInt32(widthInput.text);
+        mapGenerator.MapHeight = Convert.ToInt32(heightInput.text);
+        mapGenerator.TowerPopulation = Convert.ToInt32(towerPopInput.text);
+        sds.PopulationSize = Convert.ToInt32(agentPopInput.text);
+        
+        mapGenerator.ClearMap();
+        sds.ClearAgents();
+        
+        mapGenerator.GenerateMap();
+        sds.InitialiseAgents();
     }
 }
