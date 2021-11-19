@@ -9,22 +9,26 @@ public class UIManager : MonoBehaviour
     [SerializeField] private MapGenerator mapGenerator;
 
     [Header("UI Elements")]
+    [SerializeField] private Text playButtonText;
     [SerializeField] private Text towerText;
+    [SerializeField] private Text iterationText;
+
+    [Header("UI Map Setting Elements")]
+    [SerializeField] private GameObject mapSettings;
+    [SerializeField] private Animator mapSettingsAnimator;
+    [SerializeField] private InputField widthInput;
+    [SerializeField] private InputField heightInput;
+    [SerializeField] private InputField towerPopInput;
+    [SerializeField] private InputField agentPopInput;
 
     [Header("UI SDS Setting Elements")]
-    [SerializeField] private Text playButtonText;
+    [SerializeField] private GameObject sdsSettings;
+    [SerializeField] private Animator sdsSettingsAnimator;
     [SerializeField] private Dropdown recruitmentModes;
     [SerializeField] private Toggle destroyTowersToggle;
     [SerializeField] private Toggle infiniteToggle;
     [SerializeField] private GameObject maxIterationInputObject;
     [SerializeField] private InputField maxIterationInput;
-
-    [Header("UI Map Setting Elements")]
-    [SerializeField] private Animator settingsAnimator;
-    [SerializeField] private InputField widthInput;
-    [SerializeField] private InputField heightInput;
-    [SerializeField] private InputField towerPopInput;
-    [SerializeField] private InputField agentPopInput;
 
     
     private void Start()
@@ -42,6 +46,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         towerText.text = "Towers left: " + mapGenerator.Towers;
+        iterationText.text = "Iterations: " + sds.Itr;
     }
 
 
@@ -96,10 +101,19 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void OpenSettings()
+    public void OpenMapSettings()
     {
-        bool isOpen = settingsAnimator.GetBool("open");
-        settingsAnimator.SetBool("open", !isOpen);
+        bool isOpen = mapSettingsAnimator.GetBool("open");
+        mapSettingsAnimator.SetBool("open", !isOpen);
+        sdsSettings.SetActive(!sdsSettings.activeSelf);
+    }
+
+
+    public void OpenSDSSettings()
+    {
+        bool isOpen = sdsSettingsAnimator.GetBool("open");
+        sdsSettingsAnimator.SetBool("open", !isOpen);
+        mapSettings.SetActive(!mapSettings.activeSelf);
     }
 
     

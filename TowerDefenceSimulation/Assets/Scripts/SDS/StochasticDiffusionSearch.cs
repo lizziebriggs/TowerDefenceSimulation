@@ -65,6 +65,8 @@ namespace SDS
         }
 
         private int itr = 0;
+        public int Itr => itr;
+        
         private int activeAgents;
         private int activityPercentage;
 
@@ -144,16 +146,19 @@ namespace SDS
 
             itr++;
 
-            if (itr == maxIterations)
+            // Only show end game panel is enemies are destroying towers
+            if (itr >= maxIterations && destroyTowers)
             {
                 endGameText.text = mapGenerator.Towers == 0 ? "ENEMIES WON" : "ENEMIES LOST";
                 endGamePanel.SetActive(true);
+                playSDS = false;
             }
-            else if (mapGenerator.Towers == 0)
+            else if (mapGenerator.Towers == 0 && destroyTowers)
             {
                 endGameText.text = "ENEMIES WON";
                 endGamePanel.SetActive(true);
                 itr = maxIterations;
+                playSDS = false;
             }
         }
 
