@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Map;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -112,7 +113,7 @@ namespace SDS
             for (int i = 0; i < populationSize; i++)
             {
                 // Create and instantiate new agent
-                var agent = Instantiate(mapGenerator.Enemy, Vector3.zero, Quaternion.Euler(0, 0, 0));
+                var agent = Instantiate(mapGenerator.EnemyPrefab, Vector3.zero, Quaternion.Euler(0, 0, 0));
                 agent.transform.parent = mapGenerator.EnemiesParent.transform;
                 var agentComponent = agent.GetComponent<Agent>();
                 agents.Add(agentComponent);

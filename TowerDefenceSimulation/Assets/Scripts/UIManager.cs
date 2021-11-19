@@ -1,4 +1,5 @@
 using System;
+using Map;
 using SDS;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private StochasticDiffusionSearch sds;
     [SerializeField] private MapGenerator mapGenerator;
+    [SerializeField] private TowerSpawner towerSpawner;
 
     [Header("UI Elements")]
     [SerializeField] private Text playButtonText;
@@ -19,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField widthInput;
     [SerializeField] private InputField heightInput;
     [SerializeField] private InputField towerPopInput;
+    [SerializeField] private Dropdown towerDispersion;
     [SerializeField] private InputField agentPopInput;
 
     [Header("UI SDS Setting Elements")]
@@ -74,6 +77,12 @@ public class UIManager : MonoBehaviour
     }
 
 
+    public void ChangeTowerDispersion()
+    {
+        towerSpawner.Dispersion = (TowerSpawner.DispersionType)towerDispersion.value;
+    }
+
+
     public void ToggleInfinite()
     {
         if (infiniteToggle.isOn)
@@ -123,7 +132,7 @@ public class UIManager : MonoBehaviour
         
         mapGenerator.MapWidth = Convert.ToInt32(widthInput.text);
         mapGenerator.MapHeight = Convert.ToInt32(heightInput.text);
-        mapGenerator.TowerPopulation = Convert.ToInt32(towerPopInput.text);
+        towerSpawner.TowerPopulation = Convert.ToInt32(towerPopInput.text);
         sds.PopulationSize = Convert.ToInt32(agentPopInput.text);
         
         mapGenerator.ClearMap();
