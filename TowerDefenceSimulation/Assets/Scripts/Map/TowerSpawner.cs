@@ -1,4 +1,6 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using SDS;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,7 +17,6 @@ namespace Map
         [Header("Spawn Settings")]
         [SerializeField] private int towerPopulation;
         [SerializeField] private DispersionType dispersion;
-        [SerializeField] private int clusterSize;
     
         public int TowerPopulation
         {
@@ -30,25 +31,7 @@ namespace Map
         }
 
 
-        public void SpawnTowers()
-        {
-            switch (dispersion)
-            {
-                case DispersionType.Random:
-                    RandomSpawn();
-                    break;
-            
-                case DispersionType.Clustered:
-                    ClusteredSpawn();
-                    break;
-            
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-
-        private void RandomSpawn()
+        public void RandomSpawn()
         {
             for (int i = 0; i < towerPopulation; i++)
             {
@@ -69,32 +52,52 @@ namespace Map
         }
 
 
-        private void ClusteredSpawn()
+        public IEnumerator ClusteredSpawn(int clusterStartIndex)
         {
-            for (int i = 0; i < towerPopulation; i++)
+            List<int> neighbourHeap = new List<int> {clusterStartIndex};
+
+            // for (int t = 0; t < towerPopulation+1; t++)
+            // {
+            //     int currentMF = neighbourHeap[0];
+            //     mapGenerator.AllMicroFeatures[currentMF].BuildTower();
+            //
+            //     foreach (int neighbour in mapGenerator.AllMicroFeatures[currentMF].NeighbourIndexes)
+            //     {
+            //         if (neighbour < 0 || neighbour >= mapGenerator.AllMicroFeatures.Count || mapGenerator.AllMicroFeatures[neighbour].HasTower)
+            //             t--;
+            //         
+            //         else
+            //         {
+            //             mapGenerator.AllMicroFeatures[neighbour].BuildTower();
+            //             neighbourHeap.Add(neighbour);
+            //         }
+            //     }
+            //     
+            //     if(neighbourHeap.Count > 0) neighbourHeap.RemoveAt(0);
+            // }
+
+            while (mapGenerator.Towers < towerPopulation)
             {
-                // Pick random micro-feature on a random hypothesis
-                int randomHypoIndex = Random.Range(0, mapGenerator.Map.Count);
-                Hypothesis randomHypo = mapGenerator.Map[randomHypoIndex].GetComponent<Hypothesis>();
+                int currentMF = neighbourHeap[0];
+                if (!mapGenerator.AllMicroFeatures[currentMF].HasTower)
+                    mapGenerator.AllMicroFeatures[currentMF].BuildTower();
             
-                int randomMicroIndex = Random.Range(0, mapGenerator.HypothesisPrefab.GetComponent<Hypothesis>().MicroFeatures.Count);
-                MicroFeature randomMicro = randomHypo.MicroFeatures[randomMicroIndex].GetComponent<MicroFeature>();
-
-                if (randomMicro.HasTower) i--;
-
-                else
+                foreach (int neighbour in mapGenerator.AllMicroFeatures[currentMF].NeighbourIndexes)
                 {
-                    // Set randomMicro as start of cluster
-                    var clusterStart = randomMicro;
-                    clusterStart.BuildTower();
-                
-                    // Spawn cluster
-                    for (int j = 0; j < clusterSize; j++)
-                    {
-                        // Place towers in cluster
-                    }
+                    if (neighbour < 0 || neighbour >= mapGenerator.AllMicroFeatures.Count || mapGenerator.Towers == towerPopulation)
+                        continue;
+                    
+                    if (!mapGenerator.AllMicroFeatures[neighbour].HasTower)
+                        mapGenerator.AllMicroFeatures[neighbour].BuildTower();
+                    neighbourHeap.Add(neighbour);
+
+                    //yield return new WaitForSeconds(0.1f);
                 }
+                
+                neighbourHeap.RemoveAt(0);
             }
+
+            yield return null;
         }
     }
 }

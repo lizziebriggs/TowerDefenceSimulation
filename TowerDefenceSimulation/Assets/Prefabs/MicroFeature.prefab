@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 8743352551179519997}
+  neighbourCount: 4
 --- !u!61 &8650997722579847894
 BoxCollider2D:
   m_ObjectHideFlags: 0

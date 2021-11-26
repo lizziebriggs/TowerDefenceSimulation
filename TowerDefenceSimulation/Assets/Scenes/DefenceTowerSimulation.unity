@@ -1060,12 +1060,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerSpawner: {fileID: 293181903}
   startPos: {x: 0, y: 0}
-  mapWidth: 10
-  mapHeight: 10
+  mapWidth: 2
+  mapHeight: 2
+  hypoSize: 5
   mapParent: {fileID: 69891519}
   enemiesParent: {fileID: 1521247443}
   hypothesisPrefab: {fileID: 2095510367877511580, guid: 815f7677ccc401040843e84614775144, type: 3}
   enemyPrefab: {fileID: 993008875419324934, guid: 1ae19c514fb4e0746855461bdf55955c, type: 3}
+  allMicroFeatures: []
 --- !u!4 &293181900
 Transform:
   m_ObjectHideFlags: 0
@@ -1093,7 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 293181899}
-  populationSize: 20
+  populationSize: 2
   destroyTowers: 0
   maxIterations: 500
   infinite: 0
@@ -1146,9 +1148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 293181899}
   sds: {fileID: 293181901}
-  towerPopulation: 250
+  towerPopulation: 2
   dispersion: 0
-  clusterSize: 0
 --- !u!1 &300999137
 GameObject:
   m_ObjectHideFlags: 0
