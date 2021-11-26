@@ -68,6 +68,21 @@ public class UIManager : MonoBehaviour
     }
 
 
+    public void TogglePlay(bool setPlay)
+    {
+        if (setPlay)
+        {
+            playButtonText.text = "Pause";
+            sds.PlaySDS = true;
+        }
+        else
+        {
+            playButtonText.text = "Play";
+            sds.PlaySDS = false;
+        }
+    }
+
+
     public void ToggleTowerDestruction()
     {
         if (destroyTowersToggle.isOn)

@@ -19,6 +19,7 @@ namespace SDS
         }
         
         [SerializeField] private MapGenerator mapGenerator;
+        [SerializeField] private UIManager uiManager;
 
         [Header("SDS Values")]
         [SerializeField] private int populationSize;
@@ -102,7 +103,7 @@ namespace SDS
             // Reset values
             outputLog.text = "";
             itr = 0;
-            playSDS = false;
+            uiManager.TogglePlay(false);
             
             if (mapGenerator.MapGenerated)
             {
@@ -152,14 +153,14 @@ namespace SDS
             {
                 endGameText.text = mapGenerator.Towers == 0 ? "ENEMIES WON" : "ENEMIES LOST";
                 endGamePanel.SetActive(true);
-                playSDS = false;
+                uiManager.TogglePlay(false);
             }
             else if (mapGenerator.Towers == 0 && destroyTowers)
             {
                 endGameText.text = "ENEMIES WON";
                 endGamePanel.SetActive(true);
                 itr = maxIterations;
-                playSDS = false;
+                uiManager.TogglePlay(false);
             }
         }
 
