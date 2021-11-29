@@ -22,6 +22,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField heightInput;
     [SerializeField] private InputField towerPopInput;
     [SerializeField] private Dropdown towerDispersion;
+    [SerializeField] private GameObject clusterSettings;
+    [SerializeField] private Slider thresholdSlider;
+    [SerializeField] private InputField concentrationInput;
     [SerializeField] private InputField agentPopInput;
 
     [Header("UI SDS Setting Elements")]
@@ -94,7 +97,34 @@ public class UIManager : MonoBehaviour
 
     public void ChangeTowerDispersion()
     {
-        towerSpawner.Dispersion = (TowerSpawner.DispersionType)towerDispersion.value;
+        var newDispersion = (TowerSpawner.DispersionType) towerDispersion.value;
+        towerSpawner.Dispersion = newDispersion;
+        
+        switch (newDispersion)
+        {
+            case TowerSpawner.DispersionType.Random:
+                clusterSettings.gameObject.SetActive(false);
+                break;
+            
+            case TowerSpawner.DispersionType.Clustered:
+                clusterSettings.gameObject.SetActive(true);
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+
+    public void SetDispersionThreshold()
+    {
+        towerSpawner.DispersionThreshold = thresholdSlider.value;
+    }
+
+
+    public void SetConcentration()
+    {
+        towerSpawner.Concentration = Convert.ToInt32(concentrationInput.text);
     }
 
 
@@ -149,6 +179,12 @@ public class UIManager : MonoBehaviour
         mapGenerator.MapHeight = Convert.ToInt32(heightInput.text);
         towerSpawner.TowerPopulation = Convert.ToInt32(towerPopInput.text);
         sds.PopulationSize = Convert.ToInt32(agentPopInput.text);
+        
+        if (towerSpawner.Dispersion == TowerSpawner.DispersionType.Clustered)
+        {
+            SetDispersionThreshold();
+            SetConcentration();
+        }
         
         mapGenerator.ClearMap();
         sds.ClearAgents();

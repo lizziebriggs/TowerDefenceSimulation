@@ -170,7 +170,7 @@ namespace SDS
             for (int i = 0; i < populationSize; i++)
             {
                 var agent = agents[i];
-                var agentHypo = searchSpace[agent.Hypothesis];
+                Hypothesis agentHypo = searchSpace[agent.Hypothesis];
 
                 // Pick random micro-feature for agent to explore
                 var microFeature = agentHypo.MicroFeatures[Random.Range(0, agentHypo.MicroFeatures.Count - 1)];
