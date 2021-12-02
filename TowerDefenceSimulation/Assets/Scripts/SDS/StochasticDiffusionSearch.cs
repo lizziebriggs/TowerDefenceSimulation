@@ -148,6 +148,7 @@ namespace SDS
 
             itr++;
             
+            // Check win condition for termination
             if (mapGenerator.Towers == 0)
             {
                 endGameText.text = "ENEMIES WIN";

@@ -76,12 +76,14 @@ namespace Map
             {
                 for (int width = 0; width < mapWidth; width++)
                 {
+                    // Instantiate hypo
                     var hypo = Instantiate(hypothesisPrefab, hypoSpawnPos, Quaternion.Euler(0, 0, 0));
                     hypo.transform.parent = mapParent.transform;
 
                     var hypoComponent = hypo.GetComponent<Hypothesis>();
                     map.Add(hypoComponent);
                     
+                    // Set indexes for micro-features
                     IndexMicroFeatures(mfIndex, hypoComponent.MicroFeatures, (map.Count-1), width, height);
                     mfIndex += hypoSize;
                     
@@ -96,6 +98,7 @@ namespace Map
 
             allMicroFeatures = allMicroFeatures.OrderBy(feature => feature.MapIndex).ToList();
 
+            // Generate towers (if random spawning)
             if (towerSpawner.Dispersion == TowerSpawner.DispersionType.Random)
             {
                 towerSpawner.RandomSpawn();
@@ -104,6 +107,7 @@ namespace Map
         }
 
 
+        // Micro-features have to be indexed correctly for cluster spawning
         private void IndexMicroFeatures(int index, List<MicroFeature> microFeatures, int hypoIndex, int width, int height)
         {
             int counter = 0;

@@ -69,6 +69,7 @@ namespace Map
         {
             List<int> neighbourHeap = new List<int> {clusterStartIndex};
             
+            // Keep spawning towers until population is met
             while (mapGenerator.Towers < towerPopulation)
             {
                 int currentMF = neighbourHeap[0];
@@ -77,9 +78,11 @@ namespace Map
             
                 foreach (int neighbour in mapGenerator.AllMicroFeatures[currentMF].NeighbourIndexes)
                 {
+                    // Make sure neighbour is within the bounds
                     if (neighbour < 0 || neighbour >= mapGenerator.AllMicroFeatures.Count || mapGenerator.Towers == towerPopulation)
                         continue;
 
+                    // Check if tower should be spawned with threshold
                     float gapThreshold = Random.Range(0f, 1f);
                     if (gapThreshold > dispersionThreshold && neighbourHeap.Count > concentration)
                         continue;
