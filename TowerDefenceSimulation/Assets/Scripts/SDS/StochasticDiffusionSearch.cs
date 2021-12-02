@@ -121,7 +121,7 @@ namespace SDS
 
                 // Set up agent and hypothesis
                 agentComponent.Status = false;
-                agentComponent.Hypothesis = Random.Range(0, searchSpace.Count-1);
+                agentComponent.Hypothesis = Random.Range(0, searchSpace.Count);
                 
                 // Move agent to hypothesis
                 agent.gameObject.transform.position = searchSpace[agentComponent.Hypothesis].transform.position;
@@ -147,19 +147,17 @@ namespace SDS
             }
 
             itr++;
-
-            // Only show end game panel is enemies are destroying towers
-            if (itr >= maxIterations && destroyTowers)
+            
+            if (mapGenerator.Towers == 0)
             {
-                endGameText.text = mapGenerator.Towers == 0 ? "ENEMIES WON" : "ENEMIES LOST";
+                endGameText.text = "ENEMIES WIN";
                 endGamePanel.SetActive(true);
                 uiManager.TogglePlay(false);
             }
-            else if (mapGenerator.Towers == 0 && destroyTowers)
+            else if (itr >= maxIterations && !infinite)
             {
-                endGameText.text = "ENEMIES WON";
+                endGameText.text = mapGenerator.Towers == 0 ? "ENEMIES WIN" : "PLAYER WINS";
                 endGamePanel.SetActive(true);
-                itr = maxIterations;
                 uiManager.TogglePlay(false);
             }
         }
@@ -173,7 +171,7 @@ namespace SDS
                 Hypothesis agentHypo = searchSpace[agent.Hypothesis];
 
                 // Pick random micro-feature for agent to explore
-                var microFeature = agentHypo.MicroFeatures[Random.Range(0, agentHypo.MicroFeatures.Count - 1)];
+                var microFeature = agentHypo.MicroFeatures[Random.Range(0, agentHypo.MicroFeatures.Count)];
                 
                 // Move agent to micro feature
                 agent.gameObject.transform.position = microFeature.gameObject.transform.position;
@@ -236,10 +234,10 @@ namespace SDS
                 // Get inactive agents to communicate with another agent
                 if (!agent.Status)
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
                     
                     // If random agent is active, give agent the random agent's hypothesis
-                    agent.Hypothesis = randomAgent.Status ? randomAgent.Hypothesis : Random.Range(0, searchSpace.Count - 1);
+                    agent.Hypothesis = randomAgent.Status ? randomAgent.Hypothesis : Random.Range(0, searchSpace.Count);
                 }
             }
         }
@@ -259,7 +257,7 @@ namespace SDS
                 // Get active agents to communicate with another agent
                 if (agent.Status)
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
 
                     // Share hypothesis is selected agent is inactive and not engaged
                     if (!randomAgent.Status && !randomAgent.Engaged)
@@ -276,7 +274,7 @@ namespace SDS
                 var agent = agents[i];
                 
                 if(!agent.Status && !agent.Engaged)
-                    agent.Hypothesis = Random.Range(0, searchSpace.Count-1);
+                    agent.Hypothesis = Random.Range(0, searchSpace.Count);
             }
         }
 
@@ -297,7 +295,7 @@ namespace SDS
                 // Get active agents to communicate with another agent
                 if (agent.Status)
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
 
                     // Share hypothesis is selected agent is inactive and not engaged
                     if (!randomAgent.Status && !randomAgent.Engaged)
@@ -310,7 +308,7 @@ namespace SDS
                 // Get inactive agents to communicate with another agent
                 else
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
                     
                     // Random shares hypothesis if it's active and not engaged
                     if (randomAgent.Status && !randomAgent.Engaged)
@@ -327,7 +325,7 @@ namespace SDS
                 var agent = agents[i];
                 
                 if (!agent.Status && !agent.Engaged)
-                    agent.Hypothesis = Random.Range(0, searchSpace.Count-1);
+                    agent.Hypothesis = Random.Range(0, searchSpace.Count);
             }
         }
 
@@ -345,15 +343,18 @@ namespace SDS
                 // Get active agents to communicate with another agent
                 if (agent.Status)
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
                     
                     // Agent becomes inactive and gets new hypothesis if random has same hypothesis
                     if (randomAgent.Status && agent.Hypothesis == randomAgent.Hypothesis)
                     {
                         agent.Status = false;
-                        agent.Hypothesis = Random.Range(0, searchSpace.Count-1);
+                        agent.Hypothesis = Random.Range(0, searchSpace.Count);
                     }
                 }
+
+                else
+                    agent.Hypothesis = Random.Range(0, searchSpace.Count);
             }
         }
 
@@ -372,15 +373,18 @@ namespace SDS
                 // Get active agents to communicate with another agent
                 if (agent.Status)
                 {
-                    var randomAgent = agents[Random.Range(0, populationSize - 1)];
+                    var randomAgent = agents[Random.Range(0, populationSize)];
                     
                     // Agent becomes inactive and gets new hypothesis if random is active
                     if (randomAgent.Status)
                     {
                         agent.Status = false;
-                        agent.Hypothesis = Random.Range(0, searchSpace.Count-1);
+                        agent.Hypothesis = Random.Range(0, searchSpace.Count);
                     }
                 }
+
+                else
+                    agent.Hypothesis = Random.Range(0, searchSpace.Count);
             }
         }
     }
