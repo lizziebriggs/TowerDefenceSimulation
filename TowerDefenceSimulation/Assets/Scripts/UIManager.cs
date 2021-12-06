@@ -192,4 +192,10 @@ public class UIManager : MonoBehaviour
         mapGenerator.GenerateMap();
         sds.InitialiseAgents();
     }
+
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
